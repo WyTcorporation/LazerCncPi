@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="192.168.10.226" id="34e964fc-c778-441f-9fc6-6c3d80bd7058" port="22" customName="pi" nameFormat="CUSTOM" username="wytcorp" useOpenSSHConfig="true">
+        <option name="customName" value="pi" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>

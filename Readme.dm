@@ -1,3 +1,7 @@
+sudo apt update
+sudo apt full-upgrade -y
+sudo reboot
+
 sudo apt install git build-essential curl -y
 curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt install nodejs -y
@@ -31,3 +35,25 @@ sudo apt install libcamera-tools -y
 libcamera-still -o test.jpg
 
 libcamera-vid -t 10000 -o test.h264
+
+sudo nano /boot/firmware/config.txt
+camera_auto_detect=1
+dtoverlay=imx708  # якщо Camera Module 3, або видали цей рядок якщо стара модель
+Важливо:
+
+camera_auto_detect=1 включає автоматичне визначення модулів камери.
+
+dtoverlay=imx708 — це для нової Raspberry Pi Camera Module 3. Для стандартних камер (Module V2, HQ) цей рядок не потрібен.
+
+libcamera-hello --list-cameras
+
+
+Зроби скрипт виконуваним:
+chmod +x record_laser.sh
+mkdir ~/Videos
+
+Запускай запис через SSH або безпосередньо в терміналі Raspberry Pi:
+
+./record_laser.sh
+
+sudo apt update

@@ -13,7 +13,37 @@ USB-кабель | 1 шт. | Arduino ↔ ПК
 ✅ GRBL firmware:
 Завантаж GRBL прошивку через Arduino IDE:
 Посилання на GRBL: github.com/gnea/grbl
+Натисни кнопку Code > Download ZIP.
+Розпакуй ZIP в зручну теку (наприклад, Documents/Arduino/libraries/grbl)
+Відкрий файл config.h в будь-якому редакторі (VS Code, Notepad++, Arduino IDE)
+
+#define HOMING_CYCLE_0 (1<<X_AXIS)  // COREXY COMPATIBLE: First home X
+#define HOMING_CYCLE_1 (1<<Y_AXIS)  // COREXY COMPATIBLE: Then home Y
+
+Додати в кінці файлу config.h:
+#define DEFAULT_SPINDLE_PWM_FREQ 5000
+#define VARIABLE_SPINDLE
+
+Відкрий файл default.h в будь-якому редакторі (VS Code, Notepad++, Arduino IDE)
+#define DEFAULT_X_STEPS_PER_MM 80.0
+#define DEFAULT_Y_STEPS_PER_MM 80.0
+#define DEFAULT_Z_STEPS_PER_MM 80.0
+#define DEFAULT_X_MAX_RATE 5000.0
+#define DEFAULT_Y_MAX_RATE 5000.0
+#define DEFAULT_Z_MAX_RATE 500.0
+#define DEFAULT_X_ACCELERATION 100.0
+#define DEFAULT_Y_ACCELERATION 100.0
+#define DEFAULT_Z_ACCELERATION 100.0
+#define DEFAULT_SPINDLE_RPM_MAX 1000.0
+#define DEFAULT_SPINDLE_RPM_MIN 0.0
+#define DEFAULT_LASER_MODE 1
+#define DEFAULT_HARD_LIMIT_ENABLE 1
+#define DEFAULT_HOMING_ENABLE 1
+#define DEFAULT_HOMING_DIR_MASK 3
+
+
 Відкрий Arduino IDE → Завантаж GRBL в Arduino UNO.
+
 Встанови будь-яку CNC-програму для керування (напр. Universal Gcode Sender).
 ✅ Тестування електроніки:
 Підключись через USB і перевір, чи рухаються двигуни командами «X10 Y10 Z10» в Gcode Sender.

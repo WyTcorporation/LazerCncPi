@@ -88,3 +88,6 @@ ok
 
 $X
 ?
+
+CNCjs 1.10.5 [Grbl]
+Grbl 1.1h ['$' for help]

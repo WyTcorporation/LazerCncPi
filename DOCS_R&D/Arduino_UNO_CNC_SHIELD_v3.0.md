@@ -140,31 +140,44 @@ Raspberry Pi 5: 3А (через LM2593 або LM2596 DC-DC)
 В Universal Gcode Sender — вкладка "Console".
 4️⃣ Скопіюй та встав такі налаштування в консоль (по черзі, рядок за рядком):
 
-$100=80 ; кроків/мм X (стандарт для ременів GT2, 20 зубів шків)
-$101=80 ; кроків/мм Y (аналогічно)
-$110=5000 ; максимальна швидкість X (мм/хв)
-$111=5000 ; максимальна швидкість Y (мм/хв)
-$120=100 ; прискорення X (мм/сек²)
-$121=100 ; прискорення Y (мм/сек²)
-$30=1000 ; максимальний PWM лазера
-$31=0    ; мінімальний PWM лазера
-$32=1    ; лазерний режим
-$21=1    ; кінцеві вимикачі ввімкнені
-$22=1    ; homing ввімкнений
-$23=3    ; homing напрямок (X+ Y+)
+$0=10         ; step pulse, μs
+$1=255        ; idle delay, ms (залишає двигуни увімкненими)
+$2=0          ; step port invert
+$3=0          ; direction invert
+$4=0          ; step enable invert
+$5=0          ; limit pins invert (NO кінцевики)
+$6=0          ; probe pin invert
 
-$100=80
-$101=80
-$110=5000
-$111=5000
-$120=100
-$121=100
-$30=1000
-$31=0
-$32=1
-$21=1
-$22=1
-$23=3
+$10=1         ; status report: MPos
+$11=0.010     ; junction deviation, мм
+$12=0.002     ; arc tolerance, мм
+$13=0         ; report inches
+$20=0         ; soft limits (вимкнені)
+$21=1         ; hard limits увімкнені
+$22=1         ; homing увімкнений
+$23=3         ; homing dir X+ Y+
+$24=100.000   ; homing seek rate
+$25=500.000   ; homing feed rate
+$26=250       ; debounce
+$27=2.000     ; pull-off
+$30=1000      ; max spindle PWM
+$31=0         ; min spindle PWM
+$32=1         ; laser mode
+
+$100=80.000   ; X steps/mm (GT2 + 20 зубів)
+$101=80.000   ; Y steps/mm
+$102=80.000   ; Z steps/mm (заглушка)
+$110=5000.000 ; X max rate mm/min
+$111=5000.000 ; Y max rate mm/min
+$112=500.000  ; Z max rate
+$120=100.000  ; X acceleration mm/sec^2
+$121=100.000  ; Y acceleration mm/sec^2
+$122=100.000  ; Z acceleration
+$130=350.000  ; X travel mm
+$131=350.000  ; Y travel mm
+$132=50.000   ; Z travel (заглушка)
+
+
 
 Перевірка введених параметрів:
 $$
@@ -193,4 +206,27 @@ G1 Y50
 G1 X0
 G1 Y0
 M5
+
+Перевір кінцевики:
+$X
+?
+<Idle|MPos:0.000,0.000,0.000|FS:0,0|Pn:X>
+Означає, що X кінцевик натиснутий або замкнутий неправильно (якщо без натискання — це помилка!).
+Має бути:
+<Idle|MPos:0.000,0.000,0.000|FS:0,0>
+
+Тестовий Homing (G-код скрипт)
+$X           ; розблокуй
+G91          ; відносне позиціювання
+G0 X-5 Y-5   ; трохи відійди назад (на всякий випадок)
+$H           ; запусти Homing
+
+#define HOMING_CYCLE_0 (1<<X_AXIS)  // Спочатку X
+#define HOMING_CYCLE_1 (1<<Y_AXIS)  // Потім Y
+
+defaults.h
+#define DEFAULT_HOMING_ENABLE 1
+#define DEFAULT_HOMING_DIR_MASK 3 // X+Y+
+#define DEFAULT_HARD_LIMIT_ENABLE 1
+#define DEFAULT_HOMING_PULLOFF 2.0
 
